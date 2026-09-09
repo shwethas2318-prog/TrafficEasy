@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrafficEase — Know the road before you reach it</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🚦</div>
+      <div><strong>TrafficEase</strong><span>Know the road before you reach it.</span></div>
+    </div>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#report">Report</a>
+      <a href="#alerts">Alerts</a>
+    </nav>
+    <button class="primary small" onclick="scrollToReport()">Report Issue</button>
+  </header>
+
+  <main>
+    <section class="hero" id="dashboard">
+      <div>
+        <p class="eyebrow">COMMUNITY-POWERED TRAFFIC AWARENESS</p>
+        <h1>Don't get stuck.<br><span>Know what's ahead.</span></h1>
+        <p class="hero-copy">TrafficEase helps drivers discover accidents, congestion, construction and blocked roads before they reach them.</p>
+        <div class="hero-actions">
+          <button class="primary" onclick="showRoute()">🗺️ Check My Route</button>
+          <button class="secondary" onclick="scrollToReport()">＋ Report a Problem</button>
+        </div>
+        <div class="stats">
+          <div><b id="issueCount">12</b><span>Active reports</span></div>
+          <div><b>4.8★</b><span>Community rating</span></div>
+          <div><b>2.1k</b><span>Users helped</span></div>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <div class="map-toolbar">
+          <div class="searchbox">🔍 <input id="destination" placeholder="Enter destination" value="Mysuru Palace"></div>
+          <button class="icon-btn" onclick="locateMe()" title="Use my location">⌖</button>
+        </div>
+        <div class="map" id="map">
+          <div class="road r1"></div><div class="road r2"></div><div class="road r3"></div>
+          <div class="road r4"></div><div class="road r5"></div>
+          <div class="river"></div>
+          <div class="map-label label1">Vijayanagar</div>
+          <div class="map-label label2">City Centre</div>
+          <div class="map-label label3">Hebbal</div>
+          <div class="pin accident" style="left:69%;top:31%" onclick="selectPin('Accident','Ring Road','12 min delay')">!</div>
+          <div class="pin traffic" style="left:42%;top:58%" onclick="selectPin('Heavy Traffic','City Centre','18 min delay')">🚗</div>
+          <div class="pin construction" style="left:23%;top:37%" onclick="selectPin('Construction','Vijayanagar','8 min delay')">🚧</div>
+          <div class="user-dot" title="Your location"></div>
+          <div class="route-line"></div>
+          <div class="map-legend"><span>🔴 Accident</span><span>🟠 Heavy traffic</span><span>🟡 Construction</span></div>
+        </div>
+        <div class="route-result" id="routeResult">
+          <div><span class="status-dot"></span><b>Route looks mostly clear</b><small>1 issue detected ahead</small></div>
+          <button class="link-btn" onclick="showRoute()">View route →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="alerts">
+      <div class="section-heading">
+        <div><p class="eyebrow">LIVE AWARENESS</p><h2>What's happening nearby?</h2></div>
+        <button class="filter-btn" onclick="filterIssues()">⚙ Filter</button>
+      </div>
+      <div class="alert-grid" id="alertGrid">
+        <article class="alert-card danger">
+          <div class="alert-icon">💥</div>
+          <div><span class="tag danger-tag">ACCIDENT</span><h3>Accident on Ring Road</h3><p>Near Columbia Asia Hospital · 8 min ago</p><strong>Expected delay: 12 min</strong></div>
+          <button onclick="selectPin('Accident','Ring Road','12 min delay')">View</button>
+        </article>
+        <article class="alert-card warning">
+          <div class="alert-icon">🚗</div>
+          <div><span class="tag warning-tag">HEAVY TRAFFIC</span><h3>Slow traffic at City Centre</h3><p>MG Road junction · 5 min ago</p><strong>Expected delay: 18 min</strong></div>
+          <button onclick="selectPin('Heavy Traffic','City Centre','18 min delay')">View</button>
+        </article>
+        <article class="alert-card info">
+          <div class="alert-icon">🚧</div>
+          <div><span class="tag info-tag">CONSTRUCTION</span><h3>Road work at Vijayanagar</h3><p>Service road partially closed · 20 min ago</p><strong>Expected delay: 8 min</strong></div>
+          <button onclick="selectPin('Construction','Vijayanagar','8 min delay')">View</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="report-section" id="report">
+      <div class="report-intro">
+        <p class="eyebrow">HELP OTHER DRIVERS</p>
+        <h2>See a problem?<br><span>Report it in seconds.</span></h2>
+        <p>Every accurate report helps another driver make a better decision.</p>
+        <div class="mini-points"><div>⚡ One-tap reporting</div><div>📍 Location-aware</div><div>👥 Community verified</div></div>
+      </div>
+      <form class="report-form" id="reportForm">
+        <h3>Report a road issue</h3>
+        <label>Issue type</label>
+        <div class="issue-types">
+          <button type="button" class="issue-type active" data-type="Heavy Traffic">🚗<span>Traffic</span></button>
+          <button type="button" class="issue-type" data-type="Accident">💥<span>Accident</span></button>
+          <button type="button" class="issue-type" data-type="Construction">🚧<span>Construction</span></button>
+          <button type="button" class="issue-type" data-type="Road Block">🚫<span>Blocked Road</span></button>
+        </div>
+        <label for="location">Location</label>
+        <div class="input-wrap"><span>📍</span><input id="location" required placeholder="e.g. Ring Road, Mysuru"></div>
+        <label for="details">Optional details</label>
+        <textarea id="details" rows="3" placeholder="Tell other drivers what you saw..."></textarea>
+        <button class="primary full" type="submit">📢 Submit Report</button>
+        <p class="form-note">Demo mode: reports are stored only in this browser.</p>
+      </form>
+    </section>
+
+    <section class="how section">
+      <div class="section-heading centered"><p class="eyebrow">HOW IT WORKS</p><h2>See → Report → Alert → Reroute</h2></div>
+      <div class="steps">
+        <div class="step"><div>01</div><h3>See</h3><p>Check reported road problems on the map.</p></div>
+        <div class="step"><div>02</div><h3>Report</h3><p>Share an issue with one simple form.</p></div>
+        <div class="step"><div>03</div><h3>Alert</h3><p>Warn drivers about issues near their route.</p></div>
+        <div class="step"><div>04</div><h3>Reroute</h3><p>Choose a safer, less congested route.</p></div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <p class="eyebrow">OUR VISION</p>
+      <h2>From reacting to traffic<br><span>to predicting traffic.</span></h2>
+      <p>Today: community reports. Tomorrow: AI prediction, emergency routing and smart-city integration.</p>
+      <button class="primary" onclick="showRoute()">Try the Demo →</button>
+    </section>
+  </main>
+
+  <footer><strong>🚦 TrafficEase</strong><span>Hackathon MVP · Built for smarter journeys</span></footer>
+
+  <div class="modal hidden" id="modal">
+    <div class="modal-box">
+      <button class="close" onclick="closeModal()">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
